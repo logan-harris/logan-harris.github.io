@@ -59,7 +59,7 @@ Establishing Internet Presence
             <p>This page is under construction.</p>
           </body>
       </html>
-   7. Opened firewall on port 3000
+  7. Opened firewall on port 3000
     -Navigate to Oracle website and enter into your instance
     -Security List Ingress rule under default instance VCN:
       -Source Type: CIDR
@@ -67,15 +67,37 @@ Establishing Internet Presence
       -IP Protocol: TCP
       -Destination Port Range: 3000
       -Description: Allow Node.js HTTP traffic
-   9. Tested server in VM instance
+  8. Configured Node.js server to always run with systemd
+     -create systemd service file: sudo nano /etc/systemd/system/myapp.service
+       -pase into the nano:
+        [Unit]
+        Description=My Node.js App
+        After=network.target
+        
+        [Service]
+        ExecStart=/usr/bin/node /home/opc/index.js
+        Restart=always
+        User=opc
+        Environment=PORT=3000
+        WorkingDirectory=/home/opc
+        
+        [Install]
+        WantedBy=multi-user.target
+     - enable and start the device:
+          sudo systemctl daemon-reload
+          sudo systemctl enable myapp
+          sudo systemctl start myapp
+          sudo systemctl status myapp
+  10. Tested server in VM instance
     -curl http://localhost:3000/
     -curl http://localhost:3000/echo
-   10. GitHub Pages Redirect
+  11. GitHub Pages Redirect
     -Created new Repository: [YOUR_GITHUB_USERNAME].github.io
     -Created new index.html with meta refresh:
       -<meta http-equiv="refresh" content="0; url=http://[YOUR_VM_PUBLIC_IP]:3000">
-  11. Testing the Webpage and Server
+  12. Testing the Webpage and Server
     -Node.js server: http://[YOUR_VM_PUBLIC_IP]:3000 in the browser
     -GitHub Pages redirect: https://[YOUR_GITHUB_USERNAME].github.io in the browser
     
+
 
